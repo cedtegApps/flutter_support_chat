@@ -31,29 +31,30 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
     super.initState();
     instance = widget.firestoreInstance;
     support = instance.collection(
-      'flutter-support-chat',
+      'flutter_support_chat',
     );
   }
 
   @override
   Widget build(BuildContext context) {
     bool isSupporter = widget.supporterEmails.contains(widget.currentEmail);
-    support = instance.collection(
-      'flutter_support_chat',
-    );
+
     return StreamBuilder<QuerySnapshot>(
-      stream: support.snapshots(),
-      //isSupporter
-      //? support.snapshots()
-      //: support
-      //    .where(
-      //      'email',
-      //      isEqualTo: widget.currentEmail,
-      //    )
-      //    .snapshots(),
+      stream: isSupporter
+          ? support.snapshots()
+          : support
+              .where(
+                'email',
+                isEqualTo: widget.currentEmail,
+              )
+              .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
+        }
+        if (snapshot.hasError) {
+          print(snapshot.error.toString());
+          return Text(snapshot.error.toString());
         }
         if (snapshot.hasData) {
           return Container(
@@ -92,6 +93,11 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
                                             .substring(0, 16),
                                       ),
                                     ],
+                                  ),
+                                  Text(
+                                    '${(c.messages.last as SupportChatMessage).content.split('\n')[0]} ${(c.messages.last as SupportChatMessage).content.split('\n').length > 1 ? '...' : ''}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                   ),
                                 ],
                               ),
