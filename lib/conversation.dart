@@ -46,6 +46,26 @@ class _FlutterSupportChatConversationState
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
+        Align(
+          alignment: Alignment.topLeft,
+          child: Container(
+            padding: EdgeInsets.only(
+              left: 10,
+              bottom: 10,
+              top: 10,
+            ),
+            width: double.infinity,
+            color: Theme.of(context).bottomAppBarColor,
+            child: ElevatedButton(
+              onPressed: () {
+                widget.back();
+              },
+              child: Icon(
+                Icons.arrow_back,
+              ),
+            ),
+          ),
+        ),
         StreamBuilder<DocumentSnapshot>(
           stream: support.doc(widget.id).snapshots(),
           builder: (context, snapshot) {
@@ -54,7 +74,7 @@ class _FlutterSupportChatConversationState
             }
             final doc = SupportChat.fromFireStore(snapshot.data!);
             return Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 70),
+              margin: EdgeInsets.fromLTRB(0, 70, 0, 70),
               child: Scrollbar(
                 child: ListView.builder(
                   itemCount: doc.messages.length,

@@ -14,12 +14,14 @@ class FlutterSupportChat extends StatefulWidget {
   final List<String> supporterEmails;
   final String currentEmail;
   final FirebaseFirestore firestoreInstance;
+  final String newCaseText;
 
   const FlutterSupportChat({
     Key? key,
     required this.supporterEmails,
     required this.currentEmail,
     required this.firestoreInstance,
+    required this.newCaseText,
   }) : super(key: key);
   @override
   _FlutterSupportChatState createState() => _FlutterSupportChatState();
@@ -46,6 +48,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
               currentEmail: widget.currentEmail,
               supporterEmails: widget.supporterEmails,
               firestoreInstance: widget.firestoreInstance,
+              newCaseText: widget.newCaseText,
               selectCase: (id) {
                 setState(() {
                   caseId = id;

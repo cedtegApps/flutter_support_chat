@@ -46,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       final User user = snapshot.data!;
                       return FlutterSupportChat(
                         currentEmail: user.email!,
+                        newCaseText: 'New Support Case',
                         supporterEmails: [
                           'cedtegapps.de@gmail.com',
                         ],

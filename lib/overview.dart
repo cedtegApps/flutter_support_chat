@@ -16,12 +16,15 @@ class FlutterSupportChatOverview extends StatefulWidget {
   final FirebaseFirestore firestoreInstance;
   final Function(String) selectCase;
 
+  final String newCaseText;
+
   const FlutterSupportChatOverview({
     Key? key,
     required this.supporterEmails,
     required this.currentEmail,
     required this.firestoreInstance,
     required this.selectCase,
+    required this.newCaseText,
   }) : super(key: key);
   @override
   _FlutterSupportChatOverviewState createState() =>
@@ -150,7 +153,7 @@ class CreateNewCase extends StatelessWidget {
               createTimestamp: Timestamp.now(),
               messages: [
                 SupportChatMessage(
-                  content: 'Test New Case',
+                  content: widget.newCaseText,
                   sender: widget.supporterEmails.first,
                   timestamp: Timestamp.now(),
                 ),
