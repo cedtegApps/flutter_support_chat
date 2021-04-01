@@ -25,12 +25,15 @@ dependencies:
     path: ../
   flutter:
     sdk: flutter
+  firebase_auth: ^1.0.1
+  flutter_signin_button: ^2.0.0
+  cloud_firestore: ^1.0.1
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  import_sorter: ^4.4.1
+  import_sorter: ^4.4.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
