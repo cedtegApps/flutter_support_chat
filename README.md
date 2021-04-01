@@ -1,3 +1,3 @@
 # flutter_support_chat
 
-Flutter plugin for implemening a support chat
+Flutter plugin for implement a support chat

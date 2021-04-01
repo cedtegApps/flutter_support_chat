@@ -1,6 +1,9 @@
 name: flutter_support_chat
-description: Flutter plugin for implemening a support chat
-version: 0.0.1
+description: Flutter plugin for implement a support chat
+version: 0.1.0+alpha.1
+homepage: https://github.com/cedteg/flutter_support_chat
+repository: https://github.com/cedteg/flutter_support_chat
+issue_tracker: https://github.com/cedteg/flutter_support_chat/issues
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

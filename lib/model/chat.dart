@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../flutter_support_chat.dart';
 import 'message.dart';
 
 class SupportChat {
@@ -37,9 +36,12 @@ class SupportChat {
       requesterEmail: doc.data()!['email'],
       createTimestamp: doc.data()!['create_timestamp'],
       lastEditTimestmap: doc.data()!['last_edit_timestamp'],
-      messages: doc.data()!["messages"].map(
+      messages: doc
+          .data()!["messages"]
+          .map(
             (m) => SupportChatMessage.fromFireStore(m),
-          ),
+          )
+          .toList(),
     );
   }
 
@@ -56,9 +58,7 @@ class SupportChat {
     };
   }
 
-  Future<void> update() async {
-    final CollectionReference support =
-        instance.collection('flutter_support_chat');
+  Future<void> update(CollectionReference support) async {
     return await support.doc(id).update(toFireStore());
   }
 }
