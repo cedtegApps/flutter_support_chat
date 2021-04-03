@@ -12,9 +12,13 @@ late CollectionReference support;
 
 /// `FlutterSupportChatConversation` is should only used in FlutterSupportChat.
 class FlutterSupportChatConversation extends StatefulWidget {
-  /// `widget` is an internal used FlutterSupportChat.
+  /// `widget` is should only used in FlutterSupportChat.
   final FlutterSupportChat widget;
+
+  /// `id` is should only used in FlutterSupportChat.
   final String id;
+
+  /// `back` is should only used in FlutterSupportChat.
   final Function back;
 
   const FlutterSupportChatConversation({
