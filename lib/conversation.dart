@@ -10,8 +10,9 @@ import 'package:flutter_support_chat/send_message.dart';
 
 late CollectionReference support;
 
-/// Flutter plugin for implemening a support chat
+/// `FlutterSupportChatConversation` is should only used in FlutterSupportChat.
 class FlutterSupportChatConversation extends StatefulWidget {
+  /// `widget` is an internal used FlutterSupportChat.
   final FlutterSupportChat widget;
   final String id;
   final Function back;

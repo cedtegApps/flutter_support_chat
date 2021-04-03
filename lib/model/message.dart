@@ -2,9 +2,15 @@ import 'dart:core';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// `SupportChatMessage` is should only used in FlutterSupportChat.
 class SupportChatMessage {
+  /// `content` is should only used in FlutterSupportChat.
   String content;
+
+  /// `sender` is should only used in FlutterSupportChat.
   String sender;
+
+  /// `timestamp` is should only used in FlutterSupportChat.
   Timestamp timestamp;
   SupportChatMessage({
     required this.content,

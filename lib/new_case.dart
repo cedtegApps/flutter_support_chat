@@ -5,12 +5,14 @@ import 'model/chat.dart';
 import 'model/message.dart';
 import 'overview.dart';
 
+/// `FlutterSupportChatCreateNewCase` is should only used in FlutterSupportChat.
 class FlutterSupportChatCreateNewCase extends StatelessWidget {
   const FlutterSupportChatCreateNewCase({
     Key? key,
     required this.widget,
   }) : super(key: key);
 
+  /// `widget` is should only used in FlutterSupportChat.
   final FlutterSupportChatOverview widget;
 
   @override

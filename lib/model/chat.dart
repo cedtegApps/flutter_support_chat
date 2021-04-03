@@ -1,11 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'message.dart';
 
+/// `SupportChat` is should only used in FlutterSupportChat.
 class SupportChat {
+  /// `id` is should only used in FlutterSupportChat.
   String id;
+
+  /// `requesterEmail` is should only used in FlutterSupportChat.
   String requesterEmail;
+
+  /// `createTimestamp` is should only used in FlutterSupportChat.
   Timestamp createTimestamp;
+
+  /// `messages` is should only used in FlutterSupportChat.
   List messages;
+
+  /// `lastEditTimestmap` is should only used in FlutterSupportChat.
   Timestamp lastEditTimestmap;
   SupportChat({
     required this.id,

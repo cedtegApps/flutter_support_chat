@@ -5,8 +5,12 @@ import 'package:flutter_support_chat/conversation.dart';
 import 'model/chat.dart';
 import 'model/message.dart';
 
+/// `FlutterSupportChatMessageSend` is should only used in FlutterSupportChat.
 class FlutterSupportChatMessageSend extends StatefulWidget {
+  /// `widget` is should only used in FlutterSupportChat.
   final FlutterSupportChatConversation widget;
+
+  /// `support` is should only used in FlutterSupportChat.
   final CollectionReference support;
   const FlutterSupportChatMessageSend({
     required this.widget,

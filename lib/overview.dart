@@ -11,9 +11,12 @@ import 'new_case.dart';
 late CollectionReference support;
 late FirebaseFirestore instance;
 
-/// Flutter plugin for implemening a support chat
+/// `FlutterSupportChatOverview` is should only used in FlutterSupportChat.
 class FlutterSupportChatOverview extends StatefulWidget {
+  /// `widget` is should only used in FlutterSupportChat.
   final FlutterSupportChat widget;
+
+  /// `selectCase` is should only used in FlutterSupportChat.
   final Function(String) selectCase;
 
   const FlutterSupportChatOverview({
