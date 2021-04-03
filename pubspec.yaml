@@ -1,6 +1,6 @@
 name: flutter_support_chat
-description: Flutter plugin for implement a support chat
-version: 0.1.0-alpha.2
+description: Flutter package to implement a fire store chat between customer and product support
+version: 0.1.1
 homepage: https://github.com/cedteg/flutter_support_chat
 repository: https://github.com/cedteg/flutter_support_chat
 issue_tracker: https://github.com/cedteg/flutter_support_chat/issues

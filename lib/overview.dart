@@ -3,28 +3,23 @@ library flutter_support_chat;
 // Flutter imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'flutter_support_chat.dart';
 import 'model/chat.dart';
 import 'model/message.dart';
+import 'new_case.dart';
 
 late CollectionReference support;
 late FirebaseFirestore instance;
 
 /// Flutter plugin for implemening a support chat
 class FlutterSupportChatOverview extends StatefulWidget {
-  final List<String> supporterEmails;
-  final String currentEmail;
-  final FirebaseFirestore firestoreInstance;
+  final FlutterSupportChat widget;
   final Function(String) selectCase;
-
-  final String newCaseText;
 
   const FlutterSupportChatOverview({
     Key? key,
-    required this.supporterEmails,
-    required this.currentEmail,
-    required this.firestoreInstance,
+    required this.widget,
     required this.selectCase,
-    required this.newCaseText,
   }) : super(key: key);
   @override
   _FlutterSupportChatOverviewState createState() =>
@@ -36,7 +31,7 @@ class _FlutterSupportChatOverviewState
   @override
   void initState() {
     super.initState();
-    instance = widget.firestoreInstance;
+    instance = widget.widget.firestoreInstance;
     support = instance.collection(
       'flutter_support_chat',
     );
@@ -44,7 +39,8 @@ class _FlutterSupportChatOverviewState
 
   @override
   Widget build(BuildContext context) {
-    bool isSupporter = widget.supporterEmails.contains(widget.currentEmail);
+    bool isSupporter =
+        widget.widget.supporterEmails.contains(widget.widget.currentEmail);
 
     return StreamBuilder<QuerySnapshot>(
       stream: isSupporter
@@ -52,12 +48,14 @@ class _FlutterSupportChatOverviewState
           : support
               .where(
                 'email',
-                isEqualTo: widget.currentEmail,
+                isEqualTo: widget.widget.currentEmail,
               )
               .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
         if (snapshot.hasError) {
           print(snapshot.error.toString());
@@ -115,7 +113,7 @@ class _FlutterSupportChatOverviewState
                         );
                       }).toList(),
                     ),
-                    CreateNewCase(
+                    FlutterSupportChatCreateNewCase(
                       widget: widget,
                     ),
                   ],
@@ -124,53 +122,10 @@ class _FlutterSupportChatOverviewState
             ),
           );
         }
-        return CreateNewCase(
+        return FlutterSupportChatCreateNewCase(
           widget: widget,
         );
       },
-    );
-  }
-}
-
-class CreateNewCase extends StatelessWidget {
-  const CreateNewCase({
-    Key? key,
-    required this.widget,
-  }) : super(key: key);
-
-  final FlutterSupportChatOverview widget;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: ElevatedButton(
-        onPressed: () async {
-          final DocumentReference d = await support.add(
-            SupportChat(
-              id: '',
-              requesterEmail: widget.currentEmail,
-              createTimestamp: Timestamp.now(),
-              messages: [
-                SupportChatMessage(
-                  content: widget.newCaseText,
-                  sender: widget.supporterEmails.first,
-                  timestamp: Timestamp.now(),
-                ),
-              ],
-              lastEditTimestmap: Timestamp.now(),
-            ).toFireStore(),
-          );
-
-          widget.selectCase(d.id);
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Create new Support Case'),
-          ],
-        ),
-      ),
     );
   }
 }

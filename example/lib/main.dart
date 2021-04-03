@@ -47,6 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       return FlutterSupportChat(
                         currentEmail: user.email!,
                         newCaseText: 'New Support Case',
+                        createCaseText: "Create Support Case",
+                        writeMessageText: "Write a Message",
                         supporterEmails: [
                           'cedtegapps.de@gmail.com',
                         ],

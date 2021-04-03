@@ -15,6 +15,8 @@ class FlutterSupportChat extends StatefulWidget {
   final String currentEmail;
   final FirebaseFirestore firestoreInstance;
   final String newCaseText;
+  final String createCaseText;
+  final String writeMessageText;
 
   const FlutterSupportChat({
     Key? key,
@@ -22,6 +24,8 @@ class FlutterSupportChat extends StatefulWidget {
     required this.currentEmail,
     required this.firestoreInstance,
     required this.newCaseText,
+    this.createCaseText = 'Create Support Case',
+    this.writeMessageText = 'Write a message...',
   }) : super(key: key);
   @override
   _FlutterSupportChatState createState() => _FlutterSupportChatState();
@@ -34,9 +38,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
     return Container(
       child: caseId != null
           ? FlutterSupportChatConversation(
-              currentEmail: widget.currentEmail,
-              supporterEmails: widget.supporterEmails,
-              firestoreInstance: widget.firestoreInstance,
+              widget: widget,
               id: caseId!,
               back: () {
                 setState(() {
@@ -45,10 +47,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
               },
             )
           : FlutterSupportChatOverview(
-              currentEmail: widget.currentEmail,
-              supporterEmails: widget.supporterEmails,
-              firestoreInstance: widget.firestoreInstance,
-              newCaseText: widget.newCaseText,
+              widget: widget,
               selectCase: (id) {
                 setState(() {
                   caseId = id;
