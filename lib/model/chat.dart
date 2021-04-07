@@ -28,11 +28,11 @@ class SupportChat {
   static SupportChat fromFireStoreQuery(QueryDocumentSnapshot doc) {
     return SupportChat(
       id: doc.id,
-      requesterEmail: doc.data()!['email'],
-      createTimestamp: doc.data()!['create_timestamp'],
-      lastEditTimestmap: doc.data()!['last_edit_timestamp'],
+      requesterEmail: doc.data()['email'],
+      createTimestamp: doc.data()['create_timestamp'],
+      lastEditTimestmap: doc.data()['last_edit_timestamp'],
       messages: doc
-          .data()!["messages"]
+          .data()["messages"]
           .map(
             (m) => SupportChatMessage.fromFireStore(m),
           )
