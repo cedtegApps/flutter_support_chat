@@ -11,7 +11,7 @@ class FlutterSupportChatMessageSend extends StatefulWidget {
   final FlutterSupportChatConversation widget;
 
   /// `support` is should only used in FlutterSupportChat.
-  final CollectionReference support;
+  final CollectionReference<Map<String, dynamic>> support;
   const FlutterSupportChatMessageSend({
     required this.widget,
     required this.support,

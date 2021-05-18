@@ -8,7 +8,7 @@ import 'model/chat.dart';
 import 'model/message.dart';
 import 'new_case.dart';
 
-late CollectionReference support;
+late CollectionReference<Map<String, dynamic>> support;
 late FirebaseFirestore instance;
 
 /// `FlutterSupportChatOverview` is should only used in FlutterSupportChat.
@@ -45,7 +45,7 @@ class _FlutterSupportChatOverviewState
     bool isSupporter =
         widget.widget.supporterEmails.contains(widget.widget.currentEmail);
 
-    return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: isSupporter
           ? support.snapshots()
           : support

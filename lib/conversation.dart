@@ -8,7 +8,7 @@ import 'package:flutter_support_chat/model/chat.dart';
 import 'package:flutter_support_chat/model/message.dart';
 import 'package:flutter_support_chat/send_message.dart';
 
-late CollectionReference support;
+late CollectionReference<Map<String, dynamic>> support;
 
 /// `FlutterSupportChatConversation` is should only used in FlutterSupportChat.
 class FlutterSupportChatConversation extends StatefulWidget {
@@ -54,7 +54,7 @@ class _FlutterSupportChatConversationState
           FlutterSupportChatBackButton(
             widget: widget,
           ),
-          StreamBuilder<DocumentSnapshot>(
+          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             stream: support.doc(widget.id).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
