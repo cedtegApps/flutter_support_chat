@@ -24,7 +24,7 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
           final DocumentReference d = await support.add(
             SupportChat(
               id: '',
-              requesterEmail: widget.widget.createCaseText,
+              requesterEmail: widget.widget.currentEmail,
               createTimestamp: Timestamp.now(),
               messages: [
                 SupportChatMessage(

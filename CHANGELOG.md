@@ -1,4 +1,5 @@
-
+## [0.1.4] - 2021.05.21
+* fix [requester email is not the useremail](https://github.com/cedteg/flutter_support_chat/issues/2) 
 ## [0.1.3] - 2021.04.07
 * update firebase dependencies
 ## [0.1.2] - 2021.04.07
