@@ -94,6 +94,9 @@ class _FlutterSupportChatOverviewState
                                             .toDate()
                                             .toString()
                                             .substring(0, 10),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
                                       ),
                                       Text(
                                         (c.messages.last as SupportChatMessage)
@@ -101,6 +104,9 @@ class _FlutterSupportChatOverviewState
                                             .toDate()
                                             .toString()
                                             .substring(0, 16),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ],
                                   ),

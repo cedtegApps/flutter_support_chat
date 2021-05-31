@@ -35,14 +35,12 @@ class _FlutterSupportChatMessageSendState
           left: 10,
           bottom: 10,
           top: 10,
+          right: 10,
         ),
         width: double.infinity,
         color: Theme.of(context).bottomAppBarColor,
         child: Row(
           children: <Widget>[
-            SizedBox(
-              width: 15,
-            ),
             Expanded(
               child: TextField(
                 controller: _textEditingController,

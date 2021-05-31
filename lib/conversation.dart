@@ -64,7 +64,7 @@ class _FlutterSupportChatConversationState
               }
               final doc = SupportChat.fromFireStore(snapshot.data!);
               return Container(
-                margin: EdgeInsets.fromLTRB(0, 70, 0, 70),
+                margin: EdgeInsets.fromLTRB(0, 70, 70, 70),
                 child: Scrollbar(
                   child: ListView.builder(
                     itemCount: doc.messages.length,
@@ -153,13 +153,7 @@ class FlutterSupportChatBackButton extends StatelessWidget {
     return Align(
       alignment: Alignment.topLeft,
       child: Container(
-        padding: EdgeInsets.only(
-          left: 10,
-          bottom: 10,
-          top: 10,
-        ),
         width: double.infinity,
-        color: Theme.of(context).bottomAppBarColor,
         child: ElevatedButton(
           onPressed: () {
             widget.back();
