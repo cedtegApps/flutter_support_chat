@@ -16,6 +16,7 @@ FlutterSupportChat(
     newCaseText: 'New Support Case',
     createCaseText: "Create Support Case",
     writeMessageText: "Write a Message",
+    closeCaseText: "Do you really want to close this case?"
 );
 ```
 
