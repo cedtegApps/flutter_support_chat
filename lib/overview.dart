@@ -3,11 +3,11 @@ library flutter_support_chat;
 // Flutter imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_support_chat/flutter_support_chat.dart';
+import 'package:flutter_support_chat/model/chat.dart';
+import 'package:flutter_support_chat/model/message.dart';
 import 'package:flutter_support_chat/model/state.dart';
-import 'flutter_support_chat.dart';
-import 'model/chat.dart';
-import 'model/message.dart';
-import 'new_case.dart';
+import 'package:flutter_support_chat/new_case.dart';
 
 late CollectionReference<Map<String, dynamic>> support;
 late FirebaseFirestore instance;

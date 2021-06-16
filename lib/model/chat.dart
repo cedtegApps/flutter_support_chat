@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_support_chat/model/message.dart';
 import 'package:flutter_support_chat/model/state.dart';
-import 'message.dart';
 
 /// `SupportChat` is should only used in FlutterSupportChat.
 class SupportChat {

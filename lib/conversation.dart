@@ -1,14 +1,15 @@
 library flutter_support_chat;
 
 // Flutter imports:
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_support_chat/flutter_support_chat.dart';
 import 'package:flutter_support_chat/model/chat.dart';
 import 'package:flutter_support_chat/model/message.dart';
+import 'package:flutter_support_chat/model/state.dart';
 import 'package:flutter_support_chat/send_message.dart';
-
-late CollectionReference<Map<String, dynamic>> support;
 
 /// `FlutterSupportChatConversation` is should only used in FlutterSupportChat.
 class FlutterSupportChatConversation extends StatefulWidget {
@@ -34,13 +35,7 @@ class FlutterSupportChatConversation extends StatefulWidget {
 
 class _FlutterSupportChatConversationState
     extends State<FlutterSupportChatConversation> {
-  @override
-  void initState() {
-    support = widget.flutterSupportChat.firestoreInstance.collection(
-      'flutter_support_chat',
-    );
-    super.initState();
-  }
+  final ScrollController _controller = ScrollController();
 
   bool isSender(SupportChatMessage message) =>
       message.sender == widget.flutterSupportChat.currentEmail;
@@ -51,11 +46,14 @@ class _FlutterSupportChatConversationState
       onWillPop: () => widget.back(),
       child: Stack(
         children: <Widget>[
-          FlutterSupportChatBackButton(
-            widget: widget,
+          FlutterSupportChatHeaderButton(
+            flutterSupportChatConversation: widget,
           ),
           StreamBuilder<DocumentSnapshot<SupportChat>>(
-            stream: support
+            stream: widget.flutterSupportChat.firestoreInstance
+                .collection(
+                  'flutter_support_chat',
+                )
                 .doc(widget.id)
                 .withConverter<SupportChat>(
                   fromFirestore: (doc, _) => SupportChat.fromFireStore(doc),
@@ -69,12 +67,17 @@ class _FlutterSupportChatConversationState
                 );
               }
               SupportChat data = snapshot.data!.data()!;
+              Timer(
+                Duration(milliseconds: 100),
+                () => _controller.jumpTo(_controller.position.maxScrollExtent),
+              );
               return Container(
                 margin: EdgeInsets.fromLTRB(0, 70, 0, 70),
                 child: Scrollbar(
                   child: ListView.builder(
                     itemCount: data.messages.length,
                     shrinkWrap: true,
+                    controller: _controller,
                     padding: EdgeInsets.only(top: 10, bottom: 10),
                     itemBuilder: (context, index) {
                       return Container(
@@ -138,7 +141,6 @@ class _FlutterSupportChatConversationState
           ),
           FlutterSupportChatMessageSend(
             flutterSupportConversation: widget,
-            support: support,
           ),
         ],
       ),
@@ -146,29 +148,86 @@ class _FlutterSupportChatConversationState
   }
 }
 
-class FlutterSupportChatBackButton extends StatelessWidget {
-  const FlutterSupportChatBackButton({
+class FlutterSupportChatHeaderButton extends StatelessWidget {
+  FlutterSupportChatHeaderButton({
     Key? key,
-    required this.widget,
+    required this.flutterSupportChatConversation,
   }) : super(key: key);
 
-  final FlutterSupportChatConversation widget;
+  /// `flutterSupportChatConversation` is should only used in FlutterSupportChat.
+  final FlutterSupportChatConversation flutterSupportChatConversation;
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
       child: Container(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            widget.back();
-          },
-          child: Icon(
-            Icons.arrow_back,
-          ),
-        ),
-      ),
+          width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                onPressed: () {
+                  flutterSupportChatConversation.back();
+                },
+                icon: Icon(
+                  Icons.arrow_back,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content: Text(
+                        flutterSupportChatConversation
+                            .flutterSupportChat.closeCaseText,
+                      ),
+                      actions: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.cancel_sharp,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            final SupportChat c = SupportChat.fromFireStore(
+                              await flutterSupportChatConversation
+                                  .flutterSupportChat.firestoreInstance
+                                  .collection(
+                                    'flutter_support_chat',
+                                  )
+                                  .doc(flutterSupportChatConversation.id)
+                                  .get(),
+                            );
+                            c.state = SupportCaseState.closed;
+                            await c.update(
+                              flutterSupportChatConversation
+                                  .flutterSupportChat.firestoreInstance
+                                  .collection(
+                                'flutter_support_chat',
+                              ),
+                            );
+                            Navigator.pop(context);
+                            flutterSupportChatConversation.back();
+                          },
+                          icon: Icon(
+                            Icons.check,
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.close,
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

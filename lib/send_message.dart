@@ -1,21 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_support_chat/conversation.dart';
+import 'package:flutter_support_chat/model/chat.dart';
+import 'package:flutter_support_chat/model/message.dart';
 import 'package:flutter_support_chat/model/state.dart';
-
-import 'model/chat.dart';
-import 'model/message.dart';
 
 /// `FlutterSupportChatMessageSend` is should only used in FlutterSupportChat.
 class FlutterSupportChatMessageSend extends StatefulWidget {
   /// `flutterSupportConversation` is should only used in FlutterSupportChat.
   final FlutterSupportChatConversation flutterSupportConversation;
 
-  /// `support` is should only used in FlutterSupportChat.
-  final CollectionReference<Map<String, dynamic>> support;
-  const FlutterSupportChatMessageSend({
+  FlutterSupportChatMessageSend({
     required this.flutterSupportConversation,
-    required this.support,
   });
 
   @override
@@ -42,7 +38,13 @@ class _FlutterSupportChatMessageSendState
 
   Future<void> checkIfClosed() async {
     SupportChat c = SupportChat.fromFireStore(
-      await widget.support.doc(widget.flutterSupportConversation.id).get(),
+      await widget
+          .flutterSupportConversation.flutterSupportChat.firestoreInstance
+          .collection(
+            'flutter_support_chat',
+          )
+          .doc(widget.flutterSupportConversation.id)
+          .get(),
     );
     setState(() {
       enabled = c.state != SupportCaseState.closed;
@@ -53,7 +55,13 @@ class _FlutterSupportChatMessageSendState
     sending = true;
     setState(() {});
     final SupportChat c = SupportChat.fromFireStore(
-      await widget.support.doc(widget.flutterSupportConversation.id).get(),
+      await widget
+          .flutterSupportConversation.flutterSupportChat.firestoreInstance
+          .collection(
+            'flutter_support_chat',
+          )
+          .doc(widget.flutterSupportConversation.id)
+          .get(),
     );
     c.messages.add(
       SupportChatMessage(
@@ -66,8 +74,15 @@ class _FlutterSupportChatMessageSendState
     c.state = isSupporter
         ? SupportCaseState.waitingForCustomer
         : SupportCaseState.waitingForSupporter;
-    await c.update(widget.support).then((value) {
+    await c
+        .update(widget
+            .flutterSupportConversation.flutterSupportChat.firestoreInstance
+            .collection(
+      'flutter_support_chat',
+    ))
+        .then((value) {
       sending = false;
+      _textEditingController.clear();
       setState(() {});
     }).onError((error, stackTrace) {
       print(error.toString());
@@ -83,8 +98,8 @@ class _FlutterSupportChatMessageSendState
       child: Container(
         padding: EdgeInsets.only(
           left: 10,
-          bottom: 10,
-          top: 10,
+          bottom: 5,
+          top: 5,
           right: 10,
         ),
         width: double.infinity,

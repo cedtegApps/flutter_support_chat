@@ -18,3 +18,6 @@ FlutterSupportChat(
     writeMessageText: "Write a Message",
 );
 ```
+
+# Demo
+![Demo gif](/demo/ezgif-6-125b630e459f.gif)

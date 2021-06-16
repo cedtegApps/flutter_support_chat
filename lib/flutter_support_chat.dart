@@ -6,9 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_support_chat/conversation.dart';
 import 'package:flutter_support_chat/overview.dart';
 
-late CollectionReference support;
-late FirebaseFirestore instance;
-
 /// Flutter package to implement a fire store chat between customer and product support
 ///
 ///
@@ -28,6 +25,9 @@ late FirebaseFirestore instance;
 ///
 /// `writeMessageText` is a optional String.
 /// This text is shown on the textfield for new comments
+///
+/// `closeCaseText` is a optional String.
+/// This text is when a case should be closed
 class FlutterSupportChat extends StatefulWidget {
   /// `supporterEmails` is a required list of emails.
   /// This Emails are able to view all Cases.
@@ -52,6 +52,10 @@ class FlutterSupportChat extends StatefulWidget {
   /// This text is shown on the textfield for new comments
   final String writeMessageText;
 
+  /// `closeCaseText` is a optional String.
+  /// This text is when a case should be closed
+  final String closeCaseText;
+
   const FlutterSupportChat({
     Key? key,
     required this.supporterEmails,
@@ -60,6 +64,7 @@ class FlutterSupportChat extends StatefulWidget {
     required this.newCaseText,
     this.createCaseText = 'Create Support Case',
     this.writeMessageText = 'Write a message...',
+    this.closeCaseText = "Do you really want to close this case?",
   }) : super(key: key);
   @override
   _FlutterSupportChatState createState() => _FlutterSupportChatState();
@@ -69,6 +74,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
   String? caseId;
   @override
   Widget build(BuildContext context) {
+    instance = widget.firestoreInstance;
     return Container(
       child: caseId != null
           ? FlutterSupportChatConversation(
