@@ -1,19 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_support_chat/conversation.dart';
+import 'package:flutter_support_chat/model/state.dart';
 
 import 'model/chat.dart';
 import 'model/message.dart';
 
 /// `FlutterSupportChatMessageSend` is should only used in FlutterSupportChat.
 class FlutterSupportChatMessageSend extends StatefulWidget {
-  /// `widget` is should only used in FlutterSupportChat.
-  final FlutterSupportChatConversation widget;
+  /// `flutterSupportConversation` is should only used in FlutterSupportChat.
+  final FlutterSupportChatConversation flutterSupportConversation;
 
   /// `support` is should only used in FlutterSupportChat.
   final CollectionReference<Map<String, dynamic>> support;
   const FlutterSupportChatMessageSend({
-    required this.widget,
+    required this.flutterSupportConversation,
     required this.support,
   });
 
@@ -26,6 +27,55 @@ class _FlutterSupportChatMessageSendState
     extends State<FlutterSupportChatMessageSend> {
   final TextEditingController _textEditingController = TextEditingController();
   bool sending = false;
+  bool enabled = false;
+  @override
+  void initState() {
+    checkIfClosed();
+    super.initState();
+  }
+
+  bool get isSupporter =>
+      widget.flutterSupportConversation.flutterSupportChat.supporterEmails
+          .contains(
+        widget.flutterSupportConversation.flutterSupportChat.currentEmail,
+      );
+
+  Future<void> checkIfClosed() async {
+    SupportChat c = SupportChat.fromFireStore(
+      await widget.support.doc(widget.flutterSupportConversation.id).get(),
+    );
+    setState(() {
+      enabled = c.state != SupportCaseState.closed;
+    });
+  }
+
+  send() async {
+    sending = true;
+    setState(() {});
+    final SupportChat c = SupportChat.fromFireStore(
+      await widget.support.doc(widget.flutterSupportConversation.id).get(),
+    );
+    c.messages.add(
+      SupportChatMessage(
+        content: _textEditingController.text,
+        sender:
+            widget.flutterSupportConversation.flutterSupportChat.currentEmail,
+        timestamp: Timestamp.now(),
+      ),
+    );
+    c.state = isSupporter
+        ? SupportCaseState.waitingForCustomer
+        : SupportCaseState.waitingForSupporter;
+    await c.update(widget.support).then((value) {
+      sending = false;
+      setState(() {});
+    }).onError((error, stackTrace) {
+      print(error.toString());
+      sending = false;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -46,8 +96,10 @@ class _FlutterSupportChatMessageSendState
                 controller: _textEditingController,
                 minLines: 1,
                 maxLines: 100,
+                enabled: enabled,
                 decoration: InputDecoration(
-                  hintText: widget.widget.widget.writeMessageText,
+                  hintText: widget.flutterSupportConversation.flutterSupportChat
+                      .writeMessageText,
                   border: InputBorder.none,
                 ),
                 onChanged: (c) {
@@ -66,31 +118,7 @@ class _FlutterSupportChatMessageSendState
               )
             else
               FloatingActionButton(
-                onPressed: _textEditingController.text.isEmpty
-                    ? null
-                    : () async {
-                        sending = true;
-                        setState(() {});
-                        final SupportChat c = SupportChat.fromFireStore(
-                          await widget.support.doc(widget.widget.id).get(),
-                        );
-                        c.messages.add(
-                          SupportChatMessage(
-                            content: _textEditingController.text,
-                            sender: widget.widget.widget.currentEmail,
-                            timestamp: Timestamp.now(),
-                          ),
-                        );
-                        _textEditingController.clear();
-                        await c.update(widget.support).then((value) {
-                          sending = false;
-                          setState(() {});
-                        }).onError((error, stackTrace) {
-                          print(error.toString());
-                          sending = false;
-                          setState(() {});
-                        });
-                      },
+                onPressed: _textEditingController.text.isEmpty ? null : send,
                 child: Icon(
                   Icons.send,
                   color: Colors.white,

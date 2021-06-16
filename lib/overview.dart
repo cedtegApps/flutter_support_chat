@@ -3,6 +3,7 @@ library flutter_support_chat;
 // Flutter imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_support_chat/model/state.dart';
 import 'flutter_support_chat.dart';
 import 'model/chat.dart';
 import 'model/message.dart';
@@ -13,15 +14,15 @@ late FirebaseFirestore instance;
 
 /// `FlutterSupportChatOverview` is should only used in FlutterSupportChat.
 class FlutterSupportChatOverview extends StatefulWidget {
-  /// `widget` is should only used in FlutterSupportChat.
-  final FlutterSupportChat widget;
+  /// `flutterSupportChat` is should only used in FlutterSupportChat.
+  final FlutterSupportChat flutterSupportChat;
 
   /// `selectCase` is should only used in FlutterSupportChat.
   final Function(String) selectCase;
 
   const FlutterSupportChatOverview({
     Key? key,
-    required this.widget,
+    required this.flutterSupportChat,
     required this.selectCase,
   }) : super(key: key);
   @override
@@ -34,7 +35,7 @@ class _FlutterSupportChatOverviewState
   @override
   void initState() {
     super.initState();
-    instance = widget.widget.firestoreInstance;
+    instance = widget.flutterSupportChat.firestoreInstance;
     support = instance.collection(
       'flutter_support_chat',
     );
@@ -42,8 +43,8 @@ class _FlutterSupportChatOverviewState
 
   @override
   Widget build(BuildContext context) {
-    bool isSupporter =
-        widget.widget.supporterEmails.contains(widget.widget.currentEmail);
+    bool isSupporter = widget.flutterSupportChat.supporterEmails
+        .contains(widget.flutterSupportChat.currentEmail);
 
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: isSupporter
@@ -51,7 +52,7 @@ class _FlutterSupportChatOverviewState
           : support
               .where(
                 'email',
-                isEqualTo: widget.widget.currentEmail,
+                isEqualTo: widget.flutterSupportChat.currentEmail,
               )
               .snapshots(),
       builder: (context, snapshot) {
@@ -75,55 +76,54 @@ class _FlutterSupportChatOverviewState
                       children: snapshot.data!.docs
                           .map((c) => SupportChat.fromFireStoreQuery(c))
                           .map((SupportChat c) {
-                        return GestureDetector(
+                        bool newMessage = false;
+                        if (isSupporter &&
+                            c.state == SupportCaseState.waitingForSupporter) {
+                          newMessage = true;
+                        }
+                        if (!isSupporter &&
+                            c.state == SupportCaseState.waitingForCustomer) {
+                          newMessage = true;
+                        }
+                        return ListTile(
+                          leading: newMessage
+                              ? Icon(
+                                  Icons.message,
+                                )
+                              : c.state == SupportCaseState.closed
+                                  ? Icon(Icons.close)
+                                  : null,
                           onTap: () {
                             widget.selectCase(c.id);
                           },
-                          child: Card(
-                            child: Container(
-                              padding: EdgeInsets.all(15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        c.createTimestamp
-                                            .toDate()
-                                            .toString()
-                                            .substring(0, 10),
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        (c.messages.last as SupportChatMessage)
-                                            .timestamp
-                                            .toDate()
-                                            .toString()
-                                            .substring(0, 16),
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    '${(c.messages.last as SupportChatMessage).content.split('\n')[0]} ${(c.messages.last as SupportChatMessage).content.split('\n').length > 1 ? '...' : ''}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ],
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                c.createTimestamp
+                                    .toDate()
+                                    .toString()
+                                    .substring(0, 10),
                               ),
-                            ),
+                              Text(
+                                (c.messages.last as SupportChatMessage)
+                                    .timestamp
+                                    .toDate()
+                                    .toString()
+                                    .substring(0, 16),
+                              ),
+                            ],
+                          ),
+                          subtitle: Text(
+                            '${(c.messages.last as SupportChatMessage).content.split('\n')[0]} ${(c.messages.last as SupportChatMessage).content.split('\n').length > 1 ? '...' : ''}',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                         );
                       }).toList(),
                     ),
                     FlutterSupportChatCreateNewCase(
-                      widget: widget,
+                      flutterSupportChatOverview: widget,
                     ),
                   ],
                 ),
@@ -132,7 +132,7 @@ class _FlutterSupportChatOverviewState
           );
         }
         return FlutterSupportChatCreateNewCase(
-          widget: widget,
+          flutterSupportChatOverview: widget,
         );
       },
     );

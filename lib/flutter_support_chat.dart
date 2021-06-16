@@ -72,7 +72,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
     return Container(
       child: caseId != null
           ? FlutterSupportChatConversation(
-              widget: widget,
+              flutterSupportChat: widget,
               id: caseId!,
               back: () {
                 setState(() {
@@ -81,7 +81,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
               },
             )
           : FlutterSupportChatOverview(
-              widget: widget,
+              flutterSupportChat: widget,
               selectCase: (id) {
                 setState(() {
                   caseId = id;

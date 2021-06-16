@@ -12,8 +12,8 @@ late CollectionReference<Map<String, dynamic>> support;
 
 /// `FlutterSupportChatConversation` is should only used in FlutterSupportChat.
 class FlutterSupportChatConversation extends StatefulWidget {
-  /// `widget` is should only used in FlutterSupportChat.
-  final FlutterSupportChat widget;
+  /// `flutterSupportChat` is should only used in FlutterSupportChat.
+  final FlutterSupportChat flutterSupportChat;
 
   /// `id` is should only used in FlutterSupportChat.
   final String id;
@@ -23,7 +23,7 @@ class FlutterSupportChatConversation extends StatefulWidget {
 
   const FlutterSupportChatConversation({
     Key? key,
-    required this.widget,
+    required this.flutterSupportChat,
     required this.id,
     required this.back,
   }) : super(key: key);
@@ -36,14 +36,14 @@ class _FlutterSupportChatConversationState
     extends State<FlutterSupportChatConversation> {
   @override
   void initState() {
-    support = widget.widget.firestoreInstance.collection(
+    support = widget.flutterSupportChat.firestoreInstance.collection(
       'flutter_support_chat',
     );
     super.initState();
   }
 
   bool isSender(SupportChatMessage message) =>
-      message.sender == widget.widget.currentEmail;
+      message.sender == widget.flutterSupportChat.currentEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -54,20 +54,26 @@ class _FlutterSupportChatConversationState
           FlutterSupportChatBackButton(
             widget: widget,
           ),
-          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            stream: support.doc(widget.id).snapshots(),
+          StreamBuilder<DocumentSnapshot<SupportChat>>(
+            stream: support
+                .doc(widget.id)
+                .withConverter<SupportChat>(
+                  fromFirestore: (doc, _) => SupportChat.fromFireStore(doc),
+                  toFirestore: (supportChat, _) => supportChat.toFireStore(),
+                )
+                .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              final doc = SupportChat.fromFireStore(snapshot.data!);
+              SupportChat data = snapshot.data!.data()!;
               return Container(
-                margin: EdgeInsets.fromLTRB(0, 70, 70, 70),
+                margin: EdgeInsets.fromLTRB(0, 70, 0, 70),
                 child: Scrollbar(
                   child: ListView.builder(
-                    itemCount: doc.messages.length,
+                    itemCount: data.messages.length,
                     shrinkWrap: true,
                     padding: EdgeInsets.only(top: 10, bottom: 10),
                     itemBuilder: (context, index) {
@@ -79,22 +85,22 @@ class _FlutterSupportChatConversationState
                           bottom: 10,
                         ),
                         child: Align(
-                          alignment: isSender(doc.messages[index])
+                          alignment: isSender(data.messages[index])
                               ? Alignment.topRight
                               : Alignment.topLeft,
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(
-                                  isSender(doc.messages[index]) ? 20 : -20,
+                                  isSender(data.messages[index]) ? 20 : -20,
                                 ),
                                 bottomLeft: Radius.circular(20),
                                 topRight: Radius.circular(
-                                  !isSender(doc.messages[index]) ? 20 : -20,
+                                  !isSender(data.messages[index]) ? 20 : -20,
                                 ),
                                 bottomRight: Radius.circular(20),
                               ),
-                              color: isSender(doc.messages[index])
+                              color: isSender(data.messages[index])
                                   ? Colors.red
                                   : Colors.blueGrey,
                             ),
@@ -102,7 +108,7 @@ class _FlutterSupportChatConversationState
                             child: Column(
                               children: [
                                 Text(
-                                  doc.messages[index].timestamp
+                                  data.messages[index].timestamp
                                       .toDate()
                                       .toLocal()
                                       .toString()
@@ -113,7 +119,7 @@ class _FlutterSupportChatConversationState
                                   ),
                                 ),
                                 Text(
-                                  doc.messages[index].content,
+                                  data.messages[index].content,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
@@ -131,7 +137,7 @@ class _FlutterSupportChatConversationState
             },
           ),
           FlutterSupportChatMessageSend(
-            widget: widget,
+            flutterSupportConversation: widget,
             support: support,
           ),
         ],
