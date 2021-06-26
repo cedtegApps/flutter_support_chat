@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'message.dart';
+import 'package:flutter_support_chat/model/message.dart';
+import 'package:flutter_support_chat/model/state.dart';
 
 /// `SupportChat` is should only used in FlutterSupportChat.
 class SupportChat {
@@ -17,12 +18,17 @@ class SupportChat {
 
   /// `lastEditTimestmap` is should only used in FlutterSupportChat.
   Timestamp lastEditTimestmap;
+
+  // 'state' is should only used in FlutterSupportChat
+  SupportCaseState state;
+
   SupportChat({
     required this.id,
     required this.requesterEmail,
     required this.createTimestamp,
     required this.messages,
     required this.lastEditTimestmap,
+    required this.state,
   });
 
   static SupportChat fromFireStoreQuery(
@@ -38,6 +44,7 @@ class SupportChat {
             (m) => SupportChatMessage.fromFireStore(m),
           )
           .toList(),
+      state: SupportCaseState.values[doc.data()["state"] ?? 1],
     );
   }
 
@@ -53,6 +60,7 @@ class SupportChat {
             (m) => SupportChatMessage.fromFireStore(m),
           )
           .toList(),
+      state: SupportCaseState.values[doc.data()!["state"] ?? 1],
     );
   }
 
@@ -65,7 +73,8 @@ class SupportChat {
           .map(
             (m) => m.toFireStore(),
           )
-          .toList()
+          .toList(),
+      'state': state.index
     };
   }
 

@@ -1,3 +1,5 @@
+## [0.2.0-dev.0] - 2021.06.16
+* add case state
 ## [0.1.4+1] - 2021.05.21
 * optimized Design
 * update firebase web scripts to 8.6.1

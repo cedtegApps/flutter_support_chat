@@ -138,7 +138,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.1.4+1"
+    version: "0.2.0-dev.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -289,4 +289,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=2.12.0 <3.0.0"
-  flutter: ">=1.22.5"
+  flutter: ">=2.0.0"

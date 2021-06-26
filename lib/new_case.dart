@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'model/chat.dart';
-import 'model/message.dart';
-import 'overview.dart';
+import 'package:flutter_support_chat/model/chat.dart';
+import 'package:flutter_support_chat/model/message.dart';
+import 'package:flutter_support_chat/model/state.dart';
+import 'package:flutter_support_chat/overview.dart';
 
 /// `FlutterSupportChatCreateNewCase` is should only used in FlutterSupportChat.
 class FlutterSupportChatCreateNewCase extends StatelessWidget {
   const FlutterSupportChatCreateNewCase({
     Key? key,
-    required this.widget,
+    required this.flutterSupportChatOverview,
   }) : super(key: key);
 
-  /// `widget` is should only used in FlutterSupportChat.
-  final FlutterSupportChatOverview widget;
+  /// `flutterSupportChatOverview` is should only used in FlutterSupportChat.
+  final FlutterSupportChatOverview flutterSupportChatOverview;
 
   @override
   Widget build(BuildContext context) {
@@ -24,26 +24,30 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
           final DocumentReference d = await support.add(
             SupportChat(
               id: '',
-              requesterEmail: widget.widget.currentEmail,
+              requesterEmail:
+                  flutterSupportChatOverview.flutterSupportChat.currentEmail,
               createTimestamp: Timestamp.now(),
               messages: [
                 SupportChatMessage(
-                  content: widget.widget.newCaseText,
-                  sender: widget.widget.supporterEmails.first,
+                  content:
+                      flutterSupportChatOverview.flutterSupportChat.newCaseText,
+                  sender: flutterSupportChatOverview
+                      .flutterSupportChat.supporterEmails.first,
                   timestamp: Timestamp.now(),
                 ),
               ],
               lastEditTimestmap: Timestamp.now(),
+              state: SupportCaseState.waitingForCustomer,
             ).toFireStore(),
           );
 
-          widget.selectCase(d.id);
+          flutterSupportChatOverview.selectCase(d.id);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              widget.widget.createCaseText,
+              flutterSupportChatOverview.flutterSupportChat.createCaseText,
             ),
           ],
         ),
