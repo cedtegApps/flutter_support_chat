@@ -1,4 +1,6 @@
-## [0.2.0] - 2021.06.26
+## [0.2.1] - 2021.12.06
+* add support for cloud_firestore > 3.0.0
+* ## [0.2.0] - 2021.06.26
 * add case state
 ## [0.1.4+1] - 2021.05.21
 * optimized Design
