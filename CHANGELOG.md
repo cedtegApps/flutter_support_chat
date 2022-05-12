@@ -1,3 +1,10 @@
+## [1.0.0-alpha.0] - 2022.05.13
+* rewrite plugin
+* Bracking changes
+  * `createCaseText` renamed to `createCaseButtonText
+  * `newCaseText` renamed to `onNewCaseText
+* Add `onNewCaseCreated`
+* add `onNewMessageCreated`
 ## [0.2.1] - 2021.12.06
 * add support for cloud_firestore > 3.0.0
 * ## [0.2.0] - 2021.06.26

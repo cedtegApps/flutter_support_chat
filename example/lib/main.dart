@@ -48,13 +48,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (snapshot.hasData) {
                       final User user = snapshot.data!;
                       return FlutterSupportChat(
-                        supporterEmails: [
+                        supporterID: [
                           'cedtegapps.de@gmail.com',
                         ],
-                        currentEmail: user.email!,
+                        currentID: user.email!,
                         firestoreInstance: FirebaseFirestore.instance,
-                        newCaseText: 'New Support Case',
-                        createCaseText: "Create Support Case",
+                        onNewCaseText: 'New Support Case',
+                        createCaseButtonText: "Create Support Case",
                         writeMessageText: "Write a Message",
                       );
                     }
