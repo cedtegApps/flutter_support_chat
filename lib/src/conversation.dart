@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_support_chat/src/text_message.dart';
 import 'chat_header.dart';
 import 'model/chat.dart';
-import 'model/message.dart';
 import 'send_message.dart';
 
 /// `FlutterSupportChatConversation` is should only used in FlutterSupportChat.
@@ -49,6 +48,10 @@ class FlutterSupportChatConversation extends StatefulWidget {
   /// `back` is should only used in FlutterSupportChat.
   final Function back;
 
+  /// `onNewMessageCreated` is a optional Function.
+  /// With this for example you can send a push notification
+  final Function() onNewMessageCreated;
+
   const FlutterSupportChatConversation({
     Key? key,
     required this.id,
@@ -60,6 +63,7 @@ class FlutterSupportChatConversation extends StatefulWidget {
     required this.createCaseButtonText,
     required this.writeMessageText,
     required this.closeCaseText,
+    required this.onNewMessageCreated,
   }) : super(key: key);
   @override
   _FlutterSupportChatConversationState createState() =>
@@ -131,6 +135,7 @@ class _FlutterSupportChatConversationState
             id: widget.id,
             supporterID: widget.supporterID,
             writeMessageText: widget.writeMessageText,
+            onNewMessageCreated: widget.onNewMessageCreated,
           ),
         ],
       ),

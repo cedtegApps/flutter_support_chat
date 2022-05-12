@@ -62,6 +62,14 @@ class FlutterSupportChat extends StatefulWidget {
   /// This text is when a case should be closed
   final String closeCaseText;
 
+  /// `onNewCaseCreated` is a optional Function.
+  /// With this for example you can send a push notification to a supporter
+  final Function()? onNewCaseCreated;
+
+  /// `onNewMessageCreated` is a optional Function.
+  /// With this for example you can send a push notification
+  final Function()? onNewMessageCreated;
+
   const FlutterSupportChat({
     Key? key,
     required this.supporterID,
@@ -71,6 +79,8 @@ class FlutterSupportChat extends StatefulWidget {
     this.createCaseButtonText = 'Create Support Case',
     this.writeMessageText = 'Write a message...',
     this.closeCaseText = "Do you really want to close this case?",
+    this.onNewCaseCreated,
+    this.onNewMessageCreated,
   }) : super(key: key);
   @override
   _FlutterSupportChatState createState() => _FlutterSupportChatState();
@@ -97,6 +107,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
               supporterID: widget.supporterID,
               closeCaseText: widget.closeCaseText,
               writeMessageText: widget.writeMessageText,
+              onNewMessageCreated: widget.onNewMessageCreated ?? () {},
             )
           : FlutterSupportChatOverview(
               selectCase: (id) {
@@ -109,6 +120,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
               firestoreInstance: widget.firestoreInstance,
               onNewCaseText: widget.onNewCaseText,
               supporterID: widget.supporterID,
+              onNewCaseCreated: widget.onNewCaseCreated ?? () {},
             ),
     );
   }

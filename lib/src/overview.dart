@@ -38,15 +38,20 @@ class FlutterSupportChatOverview extends StatefulWidget {
   /// `selectCase` is should only used in FlutterSupportChat.
   final Function(String) selectCase;
 
-  const FlutterSupportChatOverview({
-    Key? key,
-    required this.supporterID,
-    required this.currentID,
-    required this.firestoreInstance,
-    required this.onNewCaseText,
-    required this.selectCase,
-    required this.createCaseButtonText,
-  }) : super(key: key);
+  /// `onNewCaseCreated` is a optional Function.
+  /// With this for example you can send a push notification to a supporter
+  final Function() onNewCaseCreated;
+
+  const FlutterSupportChatOverview(
+      {Key? key,
+      required this.supporterID,
+      required this.currentID,
+      required this.firestoreInstance,
+      required this.onNewCaseText,
+      required this.selectCase,
+      required this.createCaseButtonText,
+      required this.onNewCaseCreated})
+      : super(key: key);
   @override
   _FlutterSupportChatOverviewState createState() =>
       _FlutterSupportChatOverviewState();
@@ -150,6 +155,7 @@ class _FlutterSupportChatOverviewState
                       onNewCaseText: widget.onNewCaseText,
                       selectCase: widget.selectCase,
                       supporterID: widget.supporterID,
+                      onNewCaseCreated: widget.onNewCaseCreated,
                     ),
                   ],
                 ),
@@ -163,6 +169,7 @@ class _FlutterSupportChatOverviewState
           selectCase: widget.selectCase,
           supporterID: widget.supporterID,
           createCaseButtonText: widget.createCaseButtonText,
+          onNewCaseCreated: widget.onNewCaseCreated,
         );
       },
     );

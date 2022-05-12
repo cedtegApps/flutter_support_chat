@@ -28,6 +28,11 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
 
   /// `selectCase` is should only used in FlutterSupportChat.
   final Function(String) selectCase;
+
+  /// `onNewCaseCreated` is a optional Function.
+  /// With this for example you can send a push notification to a supporter
+  final Function() onNewCaseCreated;
+
   const FlutterSupportChatCreateNewCase({
     Key? key,
     required this.supporterID,
@@ -35,6 +40,7 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
     required this.onNewCaseText,
     required this.createCaseButtonText,
     required this.selectCase,
+    required this.onNewCaseCreated,
   }) : super(key: key);
 
   @override
@@ -61,6 +67,7 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
           );
 
           selectCase(d.id);
+          onNewCaseCreated();
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

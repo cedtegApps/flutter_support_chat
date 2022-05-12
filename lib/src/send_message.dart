@@ -26,12 +26,17 @@ class FlutterSupportChatMessageSend extends StatefulWidget {
   /// This text is shown on the textfield for new comments
   final String writeMessageText;
 
+  /// `onNewMessageCreated` is a optional Function.
+  /// With this for example you can send a push notification
+  final Function() onNewMessageCreated;
+
   FlutterSupportChatMessageSend({
     required this.supporterID,
     required this.currentID,
     required this.firestoreInstance,
     required this.id,
     required this.writeMessageText,
+    required this.onNewMessageCreated,
   });
 
   @override
@@ -97,6 +102,7 @@ class _FlutterSupportChatMessageSendState
       sending = false;
       _textEditingController.clear();
       setState(() {});
+      widget.onNewMessageCreated();
     }).onError((error, stackTrace) {
       print(error.toString());
       sending = false;
