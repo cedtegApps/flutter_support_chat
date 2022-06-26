@@ -36,7 +36,7 @@ class SupportChat {
     var data = doc.data();
     return SupportChat(
       id: doc.id,
-      requester: data['email'] ?? data['requester'],
+      requester: data['requester'] ?? data['requester'],
       createTimestamp: data['create_timestamp'],
       lastEditTimestmap: data['last_edit_timestamp'],
       messages: data["messages"]
@@ -54,7 +54,7 @@ class SupportChat {
     var data = doc.data()!;
     return SupportChat(
       id: doc.id,
-      requester: data['email'] ?? data['requester'],
+      requester: data['requester'] ?? data['requester'],
       createTimestamp: data['create_timestamp'],
       lastEditTimestmap: data['last_edit_timestamp'],
       messages: data["messages"]
@@ -69,6 +69,7 @@ class SupportChat {
   Map<String, dynamic> toFireStore() {
     return {
       'requester': requester,
+      'email': requester,
       'create_timestamp': createTimestamp,
       'last_edit_timestamp': lastEditTimestmap,
       'messages': messages

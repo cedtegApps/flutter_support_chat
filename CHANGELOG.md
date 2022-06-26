@@ -1,7 +1,8 @@
+## [1.0.0-alpha.2] - 2022.06.26
+* fix error on message converting on older versions than 1.0.0-alpha.1
 ## [1.0.0-alpha.1] - 2022.06.26
 * update example to newer firebase versions
 * added [adaptive_dialog](https://pub.dev/packages/adaptive_dialog)
-
 ## [1.0.0-alpha.0] - 2022.05.13
 * rewrite plugin
 * Bracking changes
