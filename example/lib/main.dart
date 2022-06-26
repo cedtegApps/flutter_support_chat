@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 // Package imports:
 import 'package:flutter_support_chat/flutter_support_chat.dart';
@@ -19,6 +20,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      debugShowCheckedModeBanner: false,
       title: 'flutter_support_chat example',
       home: MyHomePage(),
     );
@@ -48,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (snapshot.hasData) {
                       final User user = snapshot.data!;
                       return FlutterSupportChat(
-                        supporterID: [
+                        supporterIDs: [
                           'cedtegapps.de@gmail.com',
                         ],
                         currentID: user.email!,

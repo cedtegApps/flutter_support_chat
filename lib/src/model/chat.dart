@@ -7,8 +7,8 @@ class SupportChat {
   /// `id` is should only used in FlutterSupportChat.
   String id;
 
-  /// `requesterEmail` is should only used in FlutterSupportChat.
-  String requesterEmail;
+  /// `requester` is should only used in FlutterSupportChat.
+  String requester;
 
   /// `createTimestamp` is should only used in FlutterSupportChat.
   Timestamp createTimestamp;
@@ -24,7 +24,7 @@ class SupportChat {
 
   SupportChat({
     required this.id,
-    required this.requesterEmail,
+    required this.requester,
     required this.createTimestamp,
     required this.messages,
     required this.lastEditTimestmap,
@@ -33,52 +33,54 @@ class SupportChat {
 
   static SupportChat fromFireStoreQuery(
       QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    var data = doc.data();
     return SupportChat(
       id: doc.id,
-      requesterEmail: doc.data()['email'],
-      createTimestamp: doc.data()['create_timestamp'],
-      lastEditTimestmap: doc.data()['last_edit_timestamp'],
-      messages: doc
-          .data()["messages"]
+      requester: data['email'] ?? data['requester'],
+      createTimestamp: data['create_timestamp'],
+      lastEditTimestmap: data['last_edit_timestamp'],
+      messages: data["messages"]
           .map(
-            (m) => SupportChatMessage.fromFireStore(m),
+            (message) => SupportChatMessage.fromFireStore(
+              message,
+            ),
           )
           .toList(),
-      state: SupportCaseState.values[doc.data()["state"] ?? 1],
+      state: SupportCaseState.values[data["state"] ?? 1],
     );
   }
 
   static SupportChat fromFireStore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    var data = doc.data()!;
     return SupportChat(
       id: doc.id,
-      requesterEmail: doc.data()!['email'],
-      createTimestamp: doc.data()!['create_timestamp'],
-      lastEditTimestmap: doc.data()!['last_edit_timestamp'],
-      messages: doc
-          .data()!["messages"]
+      requester: data['email'] ?? data['requester'],
+      createTimestamp: data['create_timestamp'],
+      lastEditTimestmap: data['last_edit_timestamp'],
+      messages: data["messages"]
           .map(
-            (m) => SupportChatMessage.fromFireStore(m),
+            (message) => SupportChatMessage.fromFireStore(message),
           )
           .toList(),
-      state: SupportCaseState.values[doc.data()!["state"] ?? 1],
+      state: SupportCaseState.values[data["state"] ?? 1],
     );
   }
 
   Map<String, dynamic> toFireStore() {
     return {
-      'email': requesterEmail,
+      'requester': requester,
       'create_timestamp': createTimestamp,
       'last_edit_timestamp': lastEditTimestmap,
       'messages': messages
           .map(
-            (m) => m.toFireStore(),
+            (message) => message.toFireStore(),
           )
           .toList(),
       'state': state.index
     };
   }
 
-  Future<void> update(CollectionReference support) async {
+  Future<void> update(CollectionReference<Map<String, dynamic>> support) async {
     return await support.doc(id).update(toFireStore());
   }
 }

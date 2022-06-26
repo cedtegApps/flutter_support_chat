@@ -35,7 +35,7 @@ class FlutterSupportChat extends StatefulWidget {
   /// `supporterID` is a required list of Ids.
   /// Ids can be Email or FirebaseUsersIds
   /// This Ids are able to view all Cases.
-  final List<String> supporterID;
+  final List<String> supporterIDs;
 
   /// `currentID` is a required ID.
   /// Id can be Email or FirebaseUsersId
@@ -72,7 +72,7 @@ class FlutterSupportChat extends StatefulWidget {
 
   const FlutterSupportChat({
     Key? key,
-    required this.supporterID,
+    required this.supporterIDs,
     required this.currentID,
     required this.firestoreInstance,
     required this.onNewCaseText,
@@ -104,7 +104,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
               currentID: widget.currentID,
               firestoreInstance: widget.firestoreInstance,
               onNewCaseText: widget.onNewCaseText,
-              supporterID: widget.supporterID,
+              supporterID: widget.supporterIDs,
               closeCaseText: widget.closeCaseText,
               writeMessageText: widget.writeMessageText,
               onNewMessageCreated: widget.onNewMessageCreated ?? () {},
@@ -119,7 +119,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
               currentID: widget.currentID,
               firestoreInstance: widget.firestoreInstance,
               onNewCaseText: widget.onNewCaseText,
-              supporterID: widget.supporterID,
+              supporterID: widget.supporterIDs,
               onNewCaseCreated: widget.onNewCaseCreated ?? () {},
             ),
     );

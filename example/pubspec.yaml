@@ -12,9 +12,11 @@ dependencies:
     sdk: flutter
   flutter_support_chat:
     path: ../
-  cloud_firestore: ^2.2.0
-  firebase_auth: ^1.2.0
+  cloud_firestore: ^3.1.18 
+  firebase_auth: ^3.3.20
   flutter_signin_button: ^2.0.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

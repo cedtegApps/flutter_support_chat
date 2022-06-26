@@ -86,7 +86,7 @@ class _FlutterSupportChatMessageSendState
     );
     c.messages.add(
       SupportChatMessage(
-        content: _textEditingController.text,
+        content: _textEditingController.text.trim(),
         sender: widget.currentID,
         timestamp: Timestamp.now(),
       ),

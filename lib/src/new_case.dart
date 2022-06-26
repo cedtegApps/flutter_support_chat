@@ -45,14 +45,13 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: ElevatedButton(
-        onPressed: () async {
+    return Card(
+      child: ListTile(
+        onTap: () async {
           final DocumentReference d = await support.add(
             SupportChat(
               id: '',
-              requesterEmail: currentID,
+              requester: currentID,
               createTimestamp: Timestamp.now(),
               messages: [
                 SupportChatMessage(
@@ -69,13 +68,14 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
           selectCase(d.id);
           onNewCaseCreated();
         },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              createCaseButtonText,
-            ),
-          ],
+        title: Text(
+          createCaseButtonText,
+        ),
+        leading: Icon(
+          Icons.add_comment_outlined,
+        ),
+        trailing: Icon(
+          Icons.adaptive.arrow_forward,
         ),
       ),
     );

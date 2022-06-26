@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -56,48 +57,28 @@ class FlutterSupportChatHeaderButton extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {
-                showDialog(
+              onPressed: () async {
+                var result = await showOkCancelAlertDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    content: Text(
-                      closeCaseText,
-                    ),
-                    actions: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.cancel_sharp,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          final SupportChat c = SupportChat.fromFireStore(
-                            await firestoreInstance
-                                .collection(
-                                  'flutter_support_chat',
-                                )
-                                .doc(id)
-                                .get(),
-                          );
-                          c.state = SupportCaseState.closed;
-                          await c.update(
-                            firestoreInstance.collection(
-                              'flutter_support_chat',
-                            ),
-                          );
-                          Navigator.pop(context);
-                          back();
-                        },
-                        icon: Icon(
-                          Icons.check,
-                        ),
-                      )
-                    ],
-                  ),
+                  title: closeCaseText,
                 );
+                if (result == OkCancelResult.ok) {
+                  final SupportChat c = SupportChat.fromFireStore(
+                    await firestoreInstance
+                        .collection(
+                          'flutter_support_chat',
+                        )
+                        .doc(id)
+                        .get(),
+                  );
+                  c.state = SupportCaseState.closed;
+                  await c.update(
+                    firestoreInstance.collection(
+                      'flutter_support_chat',
+                    ),
+                  );
+                  back();
+                }
               },
               icon: Icon(
                 Icons.close,

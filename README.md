@@ -8,16 +8,17 @@ Flutter package to implement a fire store chat between customer and product supp
 
 ```
 FlutterSupportChat(
-    supporterEmails: [
+    supporterIDs: [
         'cedtegapps.de@gmail.com',
     ],
-    currentEmail: user.email!,
+    currentID: user.email!,
     firestoreInstance: FirebaseFirestore.instance,
-    newCaseText: 'New Support Case',
-    createCaseText: "Create Support Case",
+    onNewCaseText: 'New Support Case',
+    createCaseButtonText: "Create Support Case",
     writeMessageText: "Write a Message",
-    closeCaseText: "Do you really want to close this case?"
-);
+    closeCaseText: "Do you really want to close this case?",
+    onNewCaseCreated: () {},
+    this.onNewMessageCreated: () {},
 ```
 
 # Demo

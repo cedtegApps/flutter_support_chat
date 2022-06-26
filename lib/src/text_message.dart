@@ -40,13 +40,13 @@ class TextMessage extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(
-                    isSender(message) ? 20 : -20,
+                    isSender(message) ? 25 : 0,
                   ),
-                  bottomLeft: Radius.circular(20),
+                  bottomLeft: Radius.circular(25),
                   topRight: Radius.circular(
-                    !isSender(message) ? 20 : -20,
+                    !isSender(message) ? 25 : -0,
                   ),
-                  bottomRight: Radius.circular(20),
+                  bottomRight: Radius.circular(25),
                 ),
                 color: isSender(message) ? Colors.red : Colors.blueGrey,
               ),
