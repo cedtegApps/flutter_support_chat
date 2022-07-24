@@ -1,15 +1,11 @@
-## [1.0.0-alpha.2] - 2022.06.26
-* fix error on message converting on older versions than 1.0.0-alpha.1
-## [1.0.0-alpha.1] - 2022.06.26
+## [1.0.0] - 2022.07.24
 * update example to newer firebase versions
 * added [adaptive_dialog](https://pub.dev/packages/adaptive_dialog)
-## [1.0.0-alpha.0] - 2022.05.13
-* rewrite plugin
+* Add `onNewCaseCreated`
+* add `onNewMessageCreated`
 * Bracking changes
   * `createCaseText` renamed to `createCaseButtonText
   * `newCaseText` renamed to `onNewCaseText
-* Add `onNewCaseCreated`
-* add `onNewMessageCreated`
 ## [0.2.1] - 2021.12.06
 * add support for cloud_firestore > 3.0.0
 * ## [0.2.0] - 2021.06.26

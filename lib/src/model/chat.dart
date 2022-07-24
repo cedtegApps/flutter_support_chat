@@ -36,7 +36,7 @@ class SupportChat {
     var data = doc.data();
     return SupportChat(
       id: doc.id,
-      requester: data['requester'] ?? data['requester'],
+      requester: data['requester'] ?? data['email'],
       createTimestamp: data['create_timestamp'],
       lastEditTimestmap: data['last_edit_timestamp'],
       messages: data["messages"]
@@ -54,7 +54,7 @@ class SupportChat {
     var data = doc.data()!;
     return SupportChat(
       id: doc.id,
-      requester: data['requester'] ?? data['requester'],
+      requester: data['requester'] ?? data['email'],
       createTimestamp: data['create_timestamp'],
       lastEditTimestmap: data['last_edit_timestamp'],
       messages: data["messages"]
