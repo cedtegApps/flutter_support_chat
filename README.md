@@ -22,4 +22,4 @@ FlutterSupportChat(
 ```
 
 # Demo
-![Demo gif](https://github.com/cedteg/flutter_support_chat/blob/master/demo/ezgif-6-125b630e459f.gif)
+![Demo gif](https://github.com/cedtegapps/flutter_support_chat/blob/master/demo/ezgif-6-125b630e459f.gif)

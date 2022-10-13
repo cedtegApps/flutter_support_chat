@@ -1,3 +1,5 @@
+## [1.0.0+1] - 2022.10.13
+move repository from https://github.com/cedteg/flutter_support_chat to  https://github.com/cedtegApps/flutter_support_chat 
 ## [1.0.0] - 2022.07.24
 * update example to newer firebase versions
 * added [adaptive_dialog](https://pub.dev/packages/adaptive_dialog)
@@ -14,7 +16,7 @@
 * optimized Design
 * update firebase web scripts to 8.6.1
 ## [0.1.4] - 2021.05.21
-* fix [requester email is not the useremail](https://github.com/cedteg/flutter_support_chat/issues/2) 
+* fix [requester email is not the useremail](https://github.com/cedtegApps/flutter_support_chat/issues/2) 
 ## [0.1.3] - 2021.04.07
 * update firebase dependencies
 ## [0.1.2] - 2021.04.07
