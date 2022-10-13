@@ -77,7 +77,7 @@ class _FlutterSupportChatOverviewState
           ? support.snapshots()
           : support
               .where(
-                'id',
+                'requester',
                 isEqualTo: widget.currentID,
               )
               .snapshots(),
@@ -92,17 +92,34 @@ class _FlutterSupportChatOverviewState
           return Text(snapshot.error.toString());
         }
         if (snapshot.hasData) {
-          return Container(
-            child: Scrollbar(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Column(
-                        children: snapshot.data!.docs
-                            .map((c) => SupportChat.fromFireStoreQuery(c))
-                            .map(
+          List<SupportChat> data = snapshot.data!.docs
+              .map((c) => SupportChat.fromFireStoreQuery(c))
+              .toList();
+          data.sort(
+            (a, b) => b.lastEditTimestmap.compareTo(a.lastEditTimestmap),
+          );
+          return Scrollbar(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    FlutterSupportChatCreateNewCase(
+                      createCaseButtonText: widget.createCaseButtonText,
+                      currentID: widget.currentID,
+                      onNewCaseText: widget.onNewCaseText,
+                      selectCase: widget.selectCase,
+                      supporterID: widget.supporterID,
+                      onNewCaseCreated: widget.onNewCaseCreated,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ListView(
+                      shrinkWrap: true,
+                      children: ListTile.divideTiles(
+                        context: context,
+                        tiles: data.map(
                           (SupportChat chat) {
                             bool newMessage = false;
                             if (isSupporter &&
@@ -115,51 +132,49 @@ class _FlutterSupportChatOverviewState
                                     SupportCaseState.waitingForCustomer) {
                               newMessage = true;
                             }
-                            return Card(
-                              child: ListTile(
-                                leading: newMessage
-                                    ? Icon(
-                                        Icons.message,
-                                      )
-                                    : chat.state == SupportCaseState.closed
-                                        ? Icon(Icons.close)
-                                        : null,
-                                onTap: () {
-                                  widget.selectCase(chat.id);
-                                },
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${(chat.messages.last as SupportChatMessage).content.split('\n')[0]} ${(chat.messages.last as SupportChatMessage).content.split('\n').length > 1 ? '...' : ''}',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                    Text(
-                                      (chat.messages.last as SupportChatMessage)
-                                          .timestamp
-                                          .toDate()
-                                          .toString()
-                                          .substring(0, 16),
-                                    ),
-                                  ],
+                            return ListTile(
+                              title: Text(
+                                chat.title,
+                              ),
+                              leading: newMessage
+                                  ? Icon(
+                                      Icons.message,
+                                    )
+                                  : null,
+                              onTap: () {
+                                widget.selectCase(chat.id);
+                              },
+                              subtitle: Text(
+                                '${(chat.messages.last as SupportChatMessage).content.split('\n')[0]} ${(chat.messages.last as SupportChatMessage).content.split('\n').length > 1 ? '...' : ''}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                              trailing: Chip(
+                                padding: EdgeInsets.all(0),
+                                backgroundColor: chat.state ==
+                                        SupportCaseState.closed
+                                    ? Colors.red
+                                    : chat.state ==
+                                            SupportCaseState.waitingForCustomer
+                                        ? Colors.green
+                                        : Colors.orange,
+                                label: Text(
+                                  (chat.messages.last as SupportChatMessage)
+                                      .timestamp
+                                      .toDate()
+                                      .toString()
+                                      .substring(0, 16),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             );
                           },
-                        ).toList(),
-                      ),
-                      FlutterSupportChatCreateNewCase(
-                        createCaseButtonText: widget.createCaseButtonText,
-                        currentID: widget.currentID,
-                        onNewCaseText: widget.onNewCaseText,
-                        selectCase: widget.selectCase,
-                        supporterID: widget.supporterID,
-                        onNewCaseCreated: widget.onNewCaseCreated,
-                      ),
-                    ],
-                  ),
+                        ),
+                      ).toList(),
+                    ),
+                  ],
                 ),
               ),
             ),
