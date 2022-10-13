@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'model/chat.dart';
@@ -48,11 +49,25 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
     return Card(
       child: ListTile(
         onTap: () async {
+          var result = await showTextInputDialog(
+            context: context,
+            title: "A short description for the case",
+            textFields: [
+              DialogTextField(
+                hintText: "e.g. Push Notification Issue",
+              ),
+            ],
+          );
+          print(result);
+          if (result == null) {
+            return;
+          }
           final DocumentReference d = await support.add(
             SupportChat(
               id: '',
               requester: currentID,
               createTimestamp: Timestamp.now(),
+              title: result.first,
               messages: [
                 SupportChatMessage(
                   content: onNewCaseText,

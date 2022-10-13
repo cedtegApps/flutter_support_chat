@@ -1,5 +1,10 @@
+## [1.1.0] - 2022.10.13
+* add titles to a case
+* fix text overflow on overview 
+* fix no case displayed when not supporter
 ## [1.0.0+1] - 2022.10.13
-move repository from https://github.com/cedteg/flutter_support_chat to  https://github.com/cedtegApps/flutter_support_chat 
+* move repository from https://github.com/cedteg/flutter_support_chat to  https://github.com/cedtegApps/flutter_support_chat 
+## [1.0.0] - 2022.07.24
 ## [1.0.0] - 2022.07.24
 * update example to newer firebase versions
 * added [adaptive_dialog](https://pub.dev/packages/adaptive_dialog)

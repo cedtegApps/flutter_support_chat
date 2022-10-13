@@ -13,6 +13,9 @@ class SupportChat {
   /// `createTimestamp` is should only used in FlutterSupportChat.
   Timestamp createTimestamp;
 
+  // 'title' is should only used in FlutterSupportChat
+  String title;
+
   /// `messages` is should only used in FlutterSupportChat.
   List messages;
 
@@ -26,6 +29,7 @@ class SupportChat {
     required this.id,
     required this.requester,
     required this.createTimestamp,
+    required this.title,
     required this.messages,
     required this.lastEditTimestmap,
     required this.state,
@@ -39,6 +43,7 @@ class SupportChat {
       requester: data['requester'] ?? data['email'],
       createTimestamp: data['create_timestamp'],
       lastEditTimestmap: data['last_edit_timestamp'],
+      title: data['title'] ?? "No title",
       messages: data["messages"]
           .map(
             (message) => SupportChatMessage.fromFireStore(
@@ -57,9 +62,12 @@ class SupportChat {
       requester: data['requester'] ?? data['email'],
       createTimestamp: data['create_timestamp'],
       lastEditTimestmap: data['last_edit_timestamp'],
+      title: data['title'] ?? "No title",
       messages: data["messages"]
           .map(
-            (message) => SupportChatMessage.fromFireStore(message),
+            (message) => SupportChatMessage.fromFireStore(
+              message,
+            ),
           )
           .toList(),
       state: SupportCaseState.values[data["state"] ?? 1],
@@ -72,6 +80,7 @@ class SupportChat {
       'email': requester,
       'create_timestamp': createTimestamp,
       'last_edit_timestamp': lastEditTimestmap,
+      'title': title,
       'messages': messages
           .map(
             (message) => message.toFireStore(),
