@@ -98,86 +98,88 @@ class _FlutterSupportChatOverviewState
           data.sort(
             (a, b) => b.lastEditTimestmap.compareTo(a.lastEditTimestmap),
           );
-          return Scrollbar(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    FlutterSupportChatCreateNewCase(
-                      createCaseButtonText: widget.createCaseButtonText,
-                      currentID: widget.currentID,
-                      onNewCaseText: widget.onNewCaseText,
-                      selectCase: widget.selectCase,
-                      supporterID: widget.supporterID,
-                      onNewCaseCreated: widget.onNewCaseCreated,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    ListView(
-                      shrinkWrap: true,
-                      children: ListTile.divideTiles(
-                        context: context,
-                        tiles: data.map(
-                          (SupportChat chat) {
-                            bool newMessage = false;
-                            if (isSupporter &&
-                                chat.state ==
-                                    SupportCaseState.waitingForSupporter) {
-                              newMessage = true;
-                            }
-                            if (!isSupporter &&
-                                chat.state ==
-                                    SupportCaseState.waitingForCustomer) {
-                              newMessage = true;
-                            }
-                            return ListTile(
-                              title: Text(
-                                chat.title,
-                              ),
-                              leading: newMessage
-                                  ? Icon(
-                                      Icons.message,
-                                    )
-                                  : null,
-                              onTap: () {
-                                widget.selectCase(chat.id);
-                              },
-                              subtitle: Text(
-                                '${(chat.messages.last as SupportChatMessage).content.split('\n')[0]} ${(chat.messages.last as SupportChatMessage).content.split('\n').length > 1 ? '...' : ''}',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                              trailing: Chip(
-                                padding: EdgeInsets.all(0),
-                                backgroundColor: chat.state ==
-                                        SupportCaseState.closed
-                                    ? Colors.red
-                                    : chat.state ==
-                                            SupportCaseState.waitingForCustomer
-                                        ? Colors.green
-                                        : Colors.orange,
-                                label: Text(
-                                  (chat.messages.last as SupportChatMessage)
-                                      .timestamp
-                                      .toDate()
-                                      .toString()
-                                      .substring(0, 16),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ).toList(),
-                    ),
-                  ],
+          return Stack(
+            children: [
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: FlutterSupportChatCreateNewCase(
+                  createCaseButtonText: widget.createCaseButtonText,
+                  currentID: widget.currentID,
+                  onNewCaseText: widget.onNewCaseText,
+                  selectCase: widget.selectCase,
+                  supporterID: widget.supporterID,
+                  onNewCaseCreated: widget.onNewCaseCreated,
                 ),
               ),
-            ),
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 53,
+                child: Scrollbar(
+                  child: ListView(
+                    children: ListTile.divideTiles(
+                      context: context,
+                      tiles: data.map(
+                        (SupportChat chat) {
+                          bool newMessage = false;
+                          if (isSupporter &&
+                              chat.state ==
+                                  SupportCaseState.waitingForSupporter) {
+                            newMessage = true;
+                          }
+                          if (!isSupporter &&
+                              chat.state ==
+                                  SupportCaseState.waitingForCustomer) {
+                            newMessage = true;
+                          }
+                          return ListTile(
+                            title: Text(
+                              chat.title,
+                            ),
+                            leading: newMessage
+                                ? Icon(
+                                    Icons.message,
+                                  )
+                                : null,
+                            onTap: () {
+                              widget.selectCase(chat.id);
+                            },
+                            subtitle: Text(
+                              '${(chat.messages.last as SupportChatMessage).content.split('\n')[0]} ${(chat.messages.last as SupportChatMessage).content.split('\n').length > 1 ? '...' : ''}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                            trailing: Chip(
+                              padding: EdgeInsets.all(0),
+                              backgroundColor: chat.state ==
+                                      SupportCaseState.closed
+                                  ? Colors.red
+                                  : chat.state ==
+                                          SupportCaseState.waitingForCustomer
+                                      ? Colors.green
+                                      : Colors.orange,
+                              label: Text(
+                                (chat.messages.last as SupportChatMessage)
+                                    .timestamp
+                                    .toDate()
+                                    .toString()
+                                    .substring(0, 16),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ).toList(),
+                  ),
+                ),
+              ),
+            ],
           );
         }
         return FlutterSupportChatCreateNewCase(

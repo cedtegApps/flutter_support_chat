@@ -1,3 +1,5 @@
+## [1.1.1] - 2022.11.04
+* fix to scrollable contents on one page
 ## [1.1.0] - 2022.10.13
 * add titles to a case
 * fix text overflow on overview 

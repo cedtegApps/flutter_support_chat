@@ -58,7 +58,6 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
               ),
             ],
           );
-          print(result);
           if (result == null) {
             return;
           }
