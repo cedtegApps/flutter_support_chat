@@ -30,6 +30,8 @@ class FlutterSupportChatMessageSend extends StatefulWidget {
   /// With this for example you can send a push notification
   final Function() onNewMessageCreated;
 
+  final String deviceInfos;
+
   FlutterSupportChatMessageSend({
     required this.supporterID,
     required this.currentID,
@@ -37,6 +39,7 @@ class FlutterSupportChatMessageSend extends StatefulWidget {
     required this.id,
     required this.writeMessageText,
     required this.onNewMessageCreated,
+    required this.deviceInfos,
   });
 
   @override
@@ -89,6 +92,7 @@ class _FlutterSupportChatMessageSendState
         content: _textEditingController.text.trim(),
         sender: widget.currentID,
         timestamp: Timestamp.now(),
+        deviceInfos: widget.deviceInfos,
       ),
     );
     c.state = isSupporter

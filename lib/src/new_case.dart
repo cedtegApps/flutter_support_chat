@@ -33,6 +33,7 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
   /// `onNewCaseCreated` is a optional Function.
   /// With this for example you can send a push notification to a supporter
   final Function() onNewCaseCreated;
+  final String deviceInfos;
 
   const FlutterSupportChatCreateNewCase({
     Key? key,
@@ -42,6 +43,7 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
     required this.createCaseButtonText,
     required this.selectCase,
     required this.onNewCaseCreated,
+    required this.deviceInfos,
   }) : super(key: key);
 
   @override
@@ -69,10 +71,10 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
               title: result.first,
               messages: [
                 SupportChatMessage(
-                  content: onNewCaseText,
-                  sender: supporterID.first,
-                  timestamp: Timestamp.now(),
-                ),
+                    content: onNewCaseText,
+                    sender: supporterID.first,
+                    timestamp: Timestamp.now(),
+                    deviceInfos: deviceInfos),
               ],
               lastEditTimestmap: Timestamp.now(),
               state: SupportCaseState.waitingForCustomer,

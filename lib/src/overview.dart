@@ -1,6 +1,7 @@
 library flutter_support_chat;
 
 // Flutter imports:
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'model/chat.dart';
@@ -42,16 +43,24 @@ class FlutterSupportChatOverview extends StatefulWidget {
   /// With this for example you can send a push notification to a supporter
   final Function() onNewCaseCreated;
 
-  const FlutterSupportChatOverview(
-      {Key? key,
-      required this.supporterID,
-      required this.currentID,
-      required this.firestoreInstance,
-      required this.onNewCaseText,
-      required this.selectCase,
-      required this.createCaseButtonText,
-      required this.onNewCaseCreated})
-      : super(key: key);
+  /// `closeCaseText` is a optional String.
+  /// This text is when a case should be closed
+  final String closeCaseText;
+
+  final String deviceInfos;
+
+  const FlutterSupportChatOverview({
+    Key? key,
+    required this.supporterID,
+    required this.currentID,
+    required this.firestoreInstance,
+    required this.onNewCaseText,
+    required this.selectCase,
+    required this.createCaseButtonText,
+    required this.onNewCaseCreated,
+    required this.closeCaseText,
+    required this.deviceInfos,
+  }) : super(key: key);
   @override
   _FlutterSupportChatOverviewState createState() =>
       _FlutterSupportChatOverviewState();
@@ -111,6 +120,7 @@ class _FlutterSupportChatOverviewState
                   selectCase: widget.selectCase,
                   supporterID: widget.supporterID,
                   onNewCaseCreated: widget.onNewCaseCreated,
+                  deviceInfos: widget.deviceInfos,
                 ),
               ),
               Positioned(
@@ -146,6 +156,33 @@ class _FlutterSupportChatOverviewState
                                 : null,
                             onTap: () {
                               widget.selectCase(chat.id);
+                            },
+                            onLongPress: () async {
+                              if (chat.state == SupportCaseState.closed) {
+                                return;
+                              }
+                              var result = await showOkCancelAlertDialog(
+                                context: context,
+                                title: widget.closeCaseText,
+                              );
+                              if (result == OkCancelResult.ok) {
+                                final SupportChat c = SupportChat.fromFireStore(
+                                  await widget.firestoreInstance
+                                      .collection(
+                                        'flutter_support_chat',
+                                      )
+                                      .doc(
+                                        chat.id,
+                                      )
+                                      .get(),
+                                );
+                                c.state = SupportCaseState.closed;
+                                await c.update(
+                                  widget.firestoreInstance.collection(
+                                    'flutter_support_chat',
+                                  ),
+                                );
+                              }
                             },
                             subtitle: Text(
                               '${(chat.messages.last as SupportChatMessage).content.split('\n')[0]} ${(chat.messages.last as SupportChatMessage).content.split('\n').length > 1 ? '...' : ''}',
@@ -189,6 +226,7 @@ class _FlutterSupportChatOverviewState
           supporterID: widget.supporterID,
           createCaseButtonText: widget.createCaseButtonText,
           onNewCaseCreated: widget.onNewCaseCreated,
+          deviceInfos: widget.deviceInfos,
         );
       },
     );

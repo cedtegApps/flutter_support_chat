@@ -1,3 +1,6 @@
+## [1.2.0-beta.0] - 2022.11.07
+* move close case function to overview
+* add 'collectDeviceData' to directly collected this data for the supporter
 ## [1.1.1] - 2022.11.04
 * fix to scrollable contents on one page
 ## [1.1.0] - 2022.10.13

@@ -27,13 +27,25 @@ class TextMessage extends StatelessWidget {
         alignment: isSender(message) ? Alignment.topRight : Alignment.topLeft,
         child: Column(
           children: [
-            Text(
-              message.timestamp.toDate().toLocal().toString().substring(
-                    0,
-                    16,
+            GestureDetector(
+              onLongPress: () {
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      message.deviceInfos,
+                    ),
                   ),
-              style: TextStyle(
-                fontSize: 10,
+                );
+              },
+              child: Text(
+                message.timestamp.toDate().toLocal().toString().substring(
+                      0,
+                      16,
+                    ),
+                style: TextStyle(
+                  fontSize: 10,
+                ),
               ),
             ),
             Container(

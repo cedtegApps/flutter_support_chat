@@ -38,10 +38,6 @@ class FlutterSupportChatConversation extends StatefulWidget {
   /// This text is shown on the textfield for new comments
   final String writeMessageText;
 
-  /// `closeCaseText` is a optional String.
-  /// This text is when a case should be closed
-  final String closeCaseText;
-
   /// `id` is should only used in FlutterSupportChat.
   final String id;
 
@@ -51,6 +47,8 @@ class FlutterSupportChatConversation extends StatefulWidget {
   /// `onNewMessageCreated` is a optional Function.
   /// With this for example you can send a push notification
   final Function() onNewMessageCreated;
+
+  final String deviceInfos;
 
   const FlutterSupportChatConversation({
     Key? key,
@@ -62,8 +60,8 @@ class FlutterSupportChatConversation extends StatefulWidget {
     required this.onNewCaseText,
     required this.createCaseButtonText,
     required this.writeMessageText,
-    required this.closeCaseText,
     required this.onNewMessageCreated,
+    required this.deviceInfos,
   }) : super(key: key);
   @override
   _FlutterSupportChatConversationState createState() =>
@@ -80,13 +78,15 @@ class _FlutterSupportChatConversationState
       onWillPop: () => widget.back(),
       child: Stack(
         children: <Widget>[
-          FlutterSupportChatHeaderButton(
-            back: widget.back,
-            closeCaseText: widget.closeCaseText,
-            currentID: widget.currentID,
-            firestoreInstance: widget.firestoreInstance,
-            id: widget.id,
-            supporterID: widget.supporterID,
+          Positioned(
+            top: 0,
+            left: 5,
+            child: FlutterSupportChatHeaderButton(
+              back: widget.back,
+              currentID: widget.currentID,
+              id: widget.id,
+              supporterID: widget.supporterID,
+            ),
           ),
           StreamBuilder<DocumentSnapshot<SupportChat>>(
             stream: widget.firestoreInstance
@@ -136,6 +136,7 @@ class _FlutterSupportChatConversationState
             supporterID: widget.supporterID,
             writeMessageText: widget.writeMessageText,
             onNewMessageCreated: widget.onNewMessageCreated,
+            deviceInfos: widget.deviceInfos,
           ),
         ],
       ),
