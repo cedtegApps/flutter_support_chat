@@ -1,3 +1,5 @@
+## [1.2.0-beta.1] - 2022.11.08
+* fix ios device info get instance of utsname
 ## [1.2.0-beta.0] - 2022.11.07
 * move close case function to overview
 * add 'collectDeviceData' to directly collected this data for the supporter

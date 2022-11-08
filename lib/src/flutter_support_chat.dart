@@ -118,7 +118,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
         DeviceInfoPlugin().iosInfo.then(
           (value) {
             deviceInfos =
-                "iOS ${value.utsname}, ${value.model}, ${value.systemVersion}";
+                "iOS ${value.systemVersion} ${value.utsname.machine}, ${value.model}";
             setState(() {});
           },
         );
