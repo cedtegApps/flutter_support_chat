@@ -1,9 +1,6 @@
-## [1.2.0-beta.2] - 2022.11.15
+## [1.2.0] - 2022.11.15
 * allow firebase_core ">=1.2.0 <3.0.0"
 * allow cloud_firestore: ">=2.2.0 <5.0.0" 
-## [1.2.0-beta.1] - 2022.11.08
-* fix ios device info get instance of utsname
-## [1.2.0-beta.0] - 2022.11.07
 * move close case function to overview
 * add 'collectDeviceData' to directly collected this data for the supporter
 ## [1.1.1] - 2022.11.04
