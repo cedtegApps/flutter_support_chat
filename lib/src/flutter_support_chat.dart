@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_support_chat/src/model/chat.dart';
 import 'conversation.dart';
 import 'overview.dart';
 
@@ -68,11 +69,11 @@ class FlutterSupportChat extends StatefulWidget {
 
   /// `onNewCaseCreated` is a optional Function.
   /// With this for example you can send a push notification to a supporter
-  final Function()? onNewCaseCreated;
+  final Function(SupportChat)? onNewCaseCreated;
 
   /// `onNewMessageCreated` is a optional Function.
   /// With this for example you can send a push notification
-  final Function()? onNewMessageCreated;
+  final Function(SupportChat)? onNewMessageCreated;
 
   /// `collectDeviceData`
   /// whith this bool parameter you can collect data about the device
@@ -168,7 +169,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
               onNewCaseText: widget.onNewCaseText,
               supporterID: widget.supporterIDs,
               writeMessageText: widget.writeMessageText,
-              onNewMessageCreated: widget.onNewMessageCreated ?? () {},
+              onNewMessageCreated: widget.onNewMessageCreated ?? (_) {},
               deviceInfos: deviceInfos,
             )
           : FlutterSupportChatOverview(
@@ -182,7 +183,7 @@ class _FlutterSupportChatState extends State<FlutterSupportChat> {
               firestoreInstance: widget.firestoreInstance,
               onNewCaseText: widget.onNewCaseText,
               supporterID: widget.supporterIDs,
-              onNewCaseCreated: widget.onNewCaseCreated ?? () {},
+              onNewCaseCreated: widget.onNewCaseCreated ?? (_) {},
               closeCaseText: widget.closeCaseText,
               deviceInfos: deviceInfos,
             ),

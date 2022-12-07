@@ -1,3 +1,5 @@
+## [1.2.1] - 2022.12.07
+* add chat return on `onNewCaseCreated` and `onNewMessageCreated`
 ## [1.2.0] - 2022.11.15
 * allow firebase_core ">=1.2.0 <3.0.0"
 * allow cloud_firestore: ">=2.2.0 <5.0.0" 

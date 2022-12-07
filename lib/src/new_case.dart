@@ -32,7 +32,7 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
 
   /// `onNewCaseCreated` is a optional Function.
   /// With this for example you can send a push notification to a supporter
-  final Function() onNewCaseCreated;
+  final Function(SupportChat) onNewCaseCreated;
   final String deviceInfos;
 
   const FlutterSupportChatCreateNewCase({
@@ -63,26 +63,28 @@ class FlutterSupportChatCreateNewCase extends StatelessWidget {
           if (result == null) {
             return;
           }
-          final DocumentReference d = await support.add(
-            SupportChat(
-              id: '',
-              requester: currentID,
-              createTimestamp: Timestamp.now(),
-              title: result.first,
-              messages: [
-                SupportChatMessage(
-                    content: onNewCaseText,
-                    sender: supporterID.first,
-                    timestamp: Timestamp.now(),
-                    deviceInfos: deviceInfos),
-              ],
-              lastEditTimestmap: Timestamp.now(),
-              state: SupportCaseState.waitingForCustomer,
-            ).toFireStore(),
+          SupportChat chat = SupportChat(
+            id: '',
+            requester: currentID,
+            createTimestamp: Timestamp.now(),
+            title: result.first,
+            messages: [
+              SupportChatMessage(
+                  content: onNewCaseText,
+                  sender: supporterID.first,
+                  timestamp: Timestamp.now(),
+                  deviceInfos: deviceInfos),
+            ],
+            lastEditTimestmap: Timestamp.now(),
+            state: SupportCaseState.waitingForCustomer,
           );
+          final DocumentReference d = await support.add(
+            chat.toFireStore(),
+          );
+          chat.id = d.id;
 
-          selectCase(d.id);
-          onNewCaseCreated();
+          selectCase(chat.id);
+          onNewCaseCreated(chat);
         },
         title: Text(
           createCaseButtonText,

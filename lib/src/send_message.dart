@@ -28,7 +28,7 @@ class FlutterSupportChatMessageSend extends StatefulWidget {
 
   /// `onNewMessageCreated` is a optional Function.
   /// With this for example you can send a push notification
-  final Function() onNewMessageCreated;
+  final Function(SupportChat) onNewMessageCreated;
 
   final String deviceInfos;
 
@@ -106,7 +106,7 @@ class _FlutterSupportChatMessageSendState
       sending = false;
       _textEditingController.clear();
       setState(() {});
-      widget.onNewMessageCreated();
+      widget.onNewMessageCreated(c);
     }).onError((error, stackTrace) {
       print(error.toString());
       sending = false;

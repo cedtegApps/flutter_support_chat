@@ -41,7 +41,7 @@ class FlutterSupportChatOverview extends StatefulWidget {
 
   /// `onNewCaseCreated` is a optional Function.
   /// With this for example you can send a push notification to a supporter
-  final Function() onNewCaseCreated;
+  final Function(SupportChat) onNewCaseCreated;
 
   /// `closeCaseText` is a optional String.
   /// This text is when a case should be closed

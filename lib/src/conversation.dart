@@ -46,7 +46,7 @@ class FlutterSupportChatConversation extends StatefulWidget {
 
   /// `onNewMessageCreated` is a optional Function.
   /// With this for example you can send a push notification
-  final Function() onNewMessageCreated;
+  final Function(SupportChat) onNewMessageCreated;
 
   final String deviceInfos;
 
