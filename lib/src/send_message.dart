@@ -127,7 +127,7 @@ class _FlutterSupportChatMessageSendState
             right: 10,
           ),
           width: double.infinity,
-          color: Theme.of(context).bottomAppBarColor,
+          color: Theme.of(context).bottomAppBarTheme.color,
           child: Row(
             children: <Widget>[
               Expanded(

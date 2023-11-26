@@ -1,3 +1,9 @@
+## [2.0.0] - 2023.11.26
+- Support Flutter 3.16
+- `onWillPop` is deleted, and `canPop`/`onPopInvoked` is added instead
+  - Migrate to PopScope from WillPopScope
+  - https://docs.flutter.dev/release/breaking-changes/android-predictive-back
+
 ## [1.2.1] - 2022.12.07
 * add chat return on `onNewCaseCreated` and `onNewMessageCreated`
 ## [1.2.0] - 2022.11.15

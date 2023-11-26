@@ -74,8 +74,10 @@ class _FlutterSupportChatConversationState
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => widget.back(),
+    return PopScope(
+      onPopInvoked: (b) {
+        if (b) widget.back();
+      },
       child: Stack(
         children: <Widget>[
           Positioned(
